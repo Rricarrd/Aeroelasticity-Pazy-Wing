@@ -1,6 +1,7 @@
 
 %% PAZY WING PROBLEM
 clc
+%% prova
 
 %% Calculate Wing Stiffness
 [GJ,EI,xs] = CalcStiffness()
