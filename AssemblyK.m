@@ -14,11 +14,11 @@ for e = 1:Nelem % For each element
     Ke = ElemKe(Li,p); % Mass element matrix 6x6 (6 = 2 nodes x 3 DOFs)
     
     I = zeros(1,en*nj); % Array of positions corresponding to the global matrix
-    k = 0
+    k = 0;
     
     for i = 1:en     % For each node of the element
         for j = 1:nj     % For each DOF of the node
-            k = k + 1
+            k = k + 1;
             I(1,k) = IndexDOF(p,Tn(e,i),j); % Filling the I positions
         end
     end
