@@ -21,8 +21,7 @@ end
 
 % Element connectivities
 Tn = [1:length(y); 2:length(y)+1]'; % node conectivities
-Tr = (n:n:length(y))';
-Tr(end) = length(y)+1; % rib conectivities
+Tr = (n:n-1:length(y))'; % rib conectivities
 
 % Node number, element and DOFs
 Nnode = length(y);
