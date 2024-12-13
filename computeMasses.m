@@ -1,4 +1,4 @@
-function [mu mrib] = computeMasses(p)
+function [mu,mrib] = computeMasses(p)
 
 airfoil = importdata('NACA0018.txt'); % Geometry of the airfoil
 

@@ -5,6 +5,8 @@ rS = p.rS;
 r0 = p.r0;
 d = p.d;
 
+
+%%%%%%%%%%%%%%%%%% REPASSAR MATRIUS (CHAT GPT ES CA EQUIVOCAR)
 % Element mass matrix [Me]
 M1 = (mu*Li/420) * [156 22*Li 0 54 -13*Li 0;
                    22*Li 4*Li^2 0 13*Li -3*Li^2 0;
