@@ -19,7 +19,7 @@ p.d = 1;
 
 %% Numerical discretization
 % Parameters
-p.Rn = 14;         % Rib number
+p.n = 14;         % Panel node number
 p.Rs = 38.4;       % Rib spacing
 p.Lw = 550;        % Wing lenght
 p.Ls = p.Rn*p.Rs - p.Lw; % Last wing segment space
