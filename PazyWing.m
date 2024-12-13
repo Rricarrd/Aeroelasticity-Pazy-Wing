@@ -4,11 +4,11 @@ clc
 %% Calculate Wing Stiffness
 % K Matrix Parameters
 if exist('EI','var') ~= 1
-    [GJ,EI,xs] = CalcStiffness()
+    [GJ,EI,xs] = CalcStiffness();
 end
-p.EI = EI
-p.GJ = GJ
-p.xs = xs
+p.EI = EI;
+p.GJ = GJ;
+p.xs = xs;
 
 
 % M Matrix parameters

@@ -26,7 +26,7 @@ Tr = (n:n-1:length(y))'; % rib conectivities
 % Node number, element and DOFs
 Nnode = length(y);
 Nelem = Nnode-1;
-Ndof = Nnode*nj*2;
+Ndof = Nnode*nj;
 
 end
 
