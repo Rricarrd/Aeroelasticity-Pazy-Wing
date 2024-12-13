@@ -25,10 +25,24 @@ for e = 1:Nelem % For each element
     end
     
     M(I,I) = M(I,I) + Me; % Assembling the element matrix into the desired global positions
+    
+end
 
+% Introduction of the ribs mass
+for e = 1:size(Tr,1)
 
+    Mrib = [10 0 20;
+          0 0 0;
+          20 0 40];
 
+    I_ribs = zeros(1,nj);
+    k = 0;
+    for j = 1:nj
+        k = k + 1;
+        I_ribs(1,k) = IndexDOF(p,Tr(e),j);
+    end
 
+    M(I_ribs,I_ribs) = M(I_ribs,I_ribs) + Mrib;
 end
 
 M = sparse(M);

@@ -18,4 +18,3 @@ A4 = 0.06*0.00225; % [m^2] Surface of the Aluminium bar
 mu4 = A4*p.rhoAl;
 
 mu = mu1 + mu3 + mu4; % [kg/m] Linear beam density
-
