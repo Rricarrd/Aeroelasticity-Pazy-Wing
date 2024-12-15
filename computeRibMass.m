@@ -1,21 +1,21 @@
 function [Mribnum] = computeRibMass(xsnum,hnum,znum,xinum,xfnum,cnum,a_slotnum,rhonum)
 
 syms x y t % variables
-syms theta(t) eta(t) gamma(t) % functions
+syms theta(t) eta(t) gamma_(t) % functions
 
 % Variables
-xs = sym("x_s");        % [m] Shear center
-h = sym("h");           % [m] Depth
+xs = sym("x_s");         % [m] Shear center
+h = sym("h");            % [m] Depth
 z = sym("z");            % Maximum thickness
-xi = sym("xi");         % [m] Initial x position
-xf = sym("xf");         % [m] Final x position
-c = sym("c");           % [m] Chord
+xi = sym("xi");          % [m] Initial x position
+xf = sym("xf");          % [m] Final x position
+c = sym("c");            % [m] Chord
 a_slot = sym("a_slot");  % [m] Plastic slot width
 rho = sym("rho");        % [m] Nylon density
 
 % Numeric parameters
-% xsnum = 0.042;       % [m] Shear center
-% hnum = 0.004;           % [m] Depth
+% xsnum = 0.042;         % [m] Shear center
+% hnum = 0.004;          % [m] Depth
 % znum = 0.18;           % Maximum thickness
 % xinum = 0.0075;         % [m] Initial x position
 % xfnum = 0.095;         % [m] Final x position
@@ -43,7 +43,7 @@ w(x,y,t) = eta + theta*(xs-x);
 % Kinetic energy
 
 T = h*int(int((0.5*rho*diff(w,t))^2,y,0,yt),x,xi,xf);
-q = {theta(t) gamma(t) eta(t)};
+q = {theta(t) gamma_(t) eta(t)};
 
 % Find Me rib 
 
@@ -53,6 +53,6 @@ for i=1:3
     end
 end
 
-Mribnum = double(subs(M,[xs,h,z,xi,xf,c,a_slot,rho],[xsnum,hnum,znum,xinum,xfnum,cnum,a_slotnum,rhonum]))
+Mribnum = double(subs(Mrib,[xs,h,z,xi,xf,c,a_slot,rho],[xsnum,hnum,znum,xinum,xfnum,cnum,a_slotnum,rhonum]));
 end
 
