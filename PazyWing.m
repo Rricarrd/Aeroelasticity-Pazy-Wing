@@ -12,7 +12,7 @@ p.xs = xs;
 
 p.rhoAl = 2795; % [kg/m^3] Density of Aluminium
 p.rhoNyl = 930; % [kg/m^3] Density of Nylon 12
-p.z = 0.18;           % Maximum thickness
+p.z = 0.018;          % [m] Maximum thickness
 p.xi= 0.0075;         % [m] Initial x position
 p.xf = 0.095;         % [m] Final x position
 p.c = 0.1;            % [m] Chord
@@ -50,6 +50,7 @@ K = AssemblyK(y,Tn,Tr,p);
 
 
 %% Free vibrations
-[Q,W] = eigs(K,M); % Solve for eigenvalues
+k = 10;
+[Q,W] = eig(K,M); % Solve for eigenvalues
 
 f = sqrt(diag(W))/(2*pi);

@@ -1,7 +1,7 @@
 function [GJ,EI,xs] = CalcStiffness()
 
 % Choose masses (in kg) to add at each slot in the wing tip rod
-g = 9.81;
+g = 9.81; % m/s^2
 f = 1; % kg
 xw = -0.1; % m
 fload = [
@@ -49,7 +49,7 @@ for i = 1:length(x_pos_)
   displ = PazyWingLoad(fload,false);
   w1_27 = displ(23,1);
   w2_28 = displ(24,1);
-  twists_(i) = (w1_27-w2_28)/0.6;
+  twists_(i) = (w1_27-w2_28)/0.06;
 end
 
 p = polyfit(twists_, x_pos_,1);
