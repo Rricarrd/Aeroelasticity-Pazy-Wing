@@ -3,9 +3,9 @@ function [GJ,EI,xs] = CalcStiffness()
 % Choose masses (in kg) to add at each slot in the wing tip rod
 g = 9.81;
 f = 1; % kg
-x_16 = 0.02; % m
+xw = -0.1; % m
 fload = [
-    0      % x01 = -0.10 m
+    f      % x01 = -0.10 m
     0      % x02 = -0.08 m
     0      % x03 = -0.06 m
     0      % x04 = -0.04 m
@@ -20,7 +20,7 @@ fload = [
     0      % x13 =  0.14 m
     0      % x14 =  0.16 m
     0      % x15 =  0.18 m
-    f      % x16 =  0.20 m
+    0      % x16 =  0.20 m
 ];
 
 % Test is performed and vertical displacements are recorded in displ(:,1).
@@ -37,7 +37,7 @@ w2 = displ(2:2:end,1);
 % Other coordinates
 x2 = displ(2:2:end,2);
 y = displ(1:2:end,3);
-theta = (w1-w2)/0.6;
+theta = (w1-w2)/0.06;
 
 % Finding shear center position
 x_pos_ = -0.10:0.02:0.2;
@@ -47,8 +47,8 @@ for i = 1:length(x_pos_)
   fload = zeros(1,length(x_pos_));
   fload(i) = f;
   displ = PazyWingLoad(fload,false);
-  w1_27 = displ(27,1);
-  w2_28 = displ(28,1);
+  w1_27 = displ(23,1);
+  w2_28 = displ(24,1);
   twists_(i) = (w1_27-w2_28)/0.6;
 end
 
@@ -70,7 +70,7 @@ b3 = b(1);
 
 %  Physical parameters
 F = f*-g;
-GJ = (F*(xs-x_16))/a1; % Nm/rad
+GJ = (F*(xs-xw))/a1; % Nm/rad
 EI = -F/(6*b3); % Nm2
 
 end
