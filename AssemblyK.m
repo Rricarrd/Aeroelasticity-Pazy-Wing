@@ -26,10 +26,11 @@ for e = 1:Nelem % For each element
     K(I,I) = K(I,I) + Ke; % Assembling the element matrix into the desired global positions
 
 
-
-
 end
 
-K = sparse(K);
+if p.sparse
+    K = sparse(K);
+end
+
 end
 

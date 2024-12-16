@@ -1,0 +1,56 @@
+function [mu,r0,rS,d] = computeBeamMassParameters(p)
+
+syms x y t % variables
+
+% Variables
+
+
+% Numeric parameters
+p.xs = 0.042;         % [m] Shear center
+z = 0.18;           % Maximum thickness
+xi= 0.0075;         % [m] Initial x position
+xf = 0.095;         % [m] Final x position
+c = 0.1;            % [m] Chord
+rhoNyl = 930;       % [m] Nylon density
+rhoAl = 2795;       % [m] Aluminium density
+b = 0.06;           % [m] Aluminium bar width
+t = 0.00225;        % [m] Aluminium bar thickness 
+
+% NACA 0018 expression
+yt = 5 * z * ( ...
+    0.2969 * sqrt(x) - ...
+    0.1260 * x - ...
+    0.3516 * x.^2 + ...
+    0.2843 * x.^3 - ...
+    0.1015 * x.^4); %[m]
+
+%%%%%%% Linear density
+mu = int(int(rhoNyl,y,0,yt),x,0,xi) + ...
+    b*y*rhoAl + ...
+    int(int(rhoNyl,y,0,yt),x,xf,c);
+
+
+%%%%%%% Parameter r0
+r0 = sqrt((int(int(rhoNyl*y^2,y,0,yt),x,0,xi)) + ...
+           (int(int(rhoAl*y^2,y,0,t),x,0,b)) + ...
+           int(int(rhoNyl*y^2,y,0,yt),x,xf,c) ...
+    /mu);
+
+%%%%%%% Parameter rS
+rS = sqrt((int(int(rhoNyl*((xs-x)^2 + y^2),y,0,yt),x,0,xi)) + ...
+           (int(int(rhoAl*((xs-x)^2 + y^2),y,0,t),x,0,b)) + ...
+           int(int(rhoNyl*((xs-x)^2 + y^2),y,0,yt),x,xf,c) ...
+    /mu);
+
+%%%%%%% Parameter d
+d = sqrt((int(int(rhoNyl*(xs-x),y,0,yt),x,0,xi)) + ...
+           (int(int(rhoAl*(xs-x),y,0,t),x,0,b)) + ...
+           int(int(rhoNyl*(xs-x),y,0,yt),x,xf,c) ...
+    /mu);
+
+
+
+
+
+end
+

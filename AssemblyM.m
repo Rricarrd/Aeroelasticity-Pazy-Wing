@@ -42,6 +42,8 @@ for e = 1:size(Tr,1)
     M(I_ribs,I_ribs) = M(I_ribs,I_ribs) + Mrib;
 end
 
-M = sparse(M);
+if p.sparse
+    M = sparse(M);
+end
 end
 

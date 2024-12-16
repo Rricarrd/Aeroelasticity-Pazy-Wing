@@ -1,19 +1,19 @@
 function [y,Tn,Tr,Nnode,Nelem,Ndof] = DiscretizeWing(p)
 
 % Parameters
-Rs = p.Rs
-Lw = p.Lw
-n = p.n
-nj = p.nj
-ng = p.ng
+Rs = p.Rs;
+Lw = p.Lw;
+n = p.n;
+nj = p.nj;
+ng = p.ng;
 
 % Rib positions
-yj = 0:Rs:Lw
-yj(15) = 550
+yj = 0:Rs:Lw;
+yj(15) = 550;
 
 
 % Nodal coordinates
-y = 0
+y = 0;
 for i = 1:length(yj)-1
     yi = linspace(yj(i),yj(i+1),n);
     y = [y,yi(2:end)];
