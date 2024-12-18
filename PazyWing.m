@@ -54,6 +54,6 @@ K = AssemblyK(y,Tn,Tr,p);
 
 %% Free vibrations
 k = 10;
-[Q,W] = eig(K,M); % Solve for eigenvalues
+[Q,W] = eig(K^-1*M); % Solve for eigenvalues
 
 f = sqrt(diag(W))/(2*pi);
