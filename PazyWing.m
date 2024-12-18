@@ -53,6 +53,9 @@ K = AssemblyK(y,Tn,Tr,p);
 
 
 %% Free vibrations
+
+%%% WE STILL HAVE SOME PROBLEMS WITH THE RESULT OF THE FREE VIBRATION
+%%% ANALYSIS
 k = 10;
 [Q,W] = eig(K^-1*M); % Solve for eigenvalues
 
