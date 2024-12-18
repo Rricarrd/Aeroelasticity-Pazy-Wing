@@ -16,7 +16,7 @@ rho = sym("rho");        % [m] Nylon density
 % Numeric parameters
 % xsnum = 0.042;         % [m] Shear center
 % hnum = 0.004;          % [m] Depth
-% znum = 0.18;           % Maximum thickness
+% znum = 0.018;           % Maximum thickness
 % xinum = 0.0075;         % [m] Initial x position
 % xfnum = 0.095;         % [m] Final x position
 % cnum = 0.1;           % [m] Chord

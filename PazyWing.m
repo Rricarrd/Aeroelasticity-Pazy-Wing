@@ -1,6 +1,7 @@
 
 %% PAZY WING PROBLEM
 clc
+clear
 %% Calculate Wing Stiffness
 % K Matrix Parameters
 if exist('EI','var') ~= 1
@@ -18,7 +19,9 @@ p.xf = 0.095;         % [m] Final x position
 p.c = 0.1;            % [m] Chord
 p.b = 0.06;           % [m] Aluminium bar width
 p.t = 0.00225;        % [m] Aluminium bar thickness 
-p.bi =0.02;           % [m] Aluminium bar front edge position
+p.bi = 0.02;           % [m] Aluminium bar front edge position
+p.h = 0.004;          % [m] Depth
+p.a_slot = 0.005;     % [m] Plastic slot width
 
 
 
