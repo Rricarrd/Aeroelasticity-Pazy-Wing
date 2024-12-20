@@ -13,24 +13,16 @@ c = sym("c");            % [m] Chord
 a_slot = sym("a_slot");  % [m] Plastic slot width
 rho = sym("rho");        % [m] Nylon density
 
-% Numeric parameters
-% xsnum = 0.042;         % [m] Shear center
-% hnum = 0.004;          % [m] Depth
-% znum = 0.018;           % Maximum thickness
-% xinum = 0.0075;         % [m] Initial x position
-% xfnum = 0.095;         % [m] Final x position
-% cnum = 0.1;           % [m] Chord
-% a_slotnum = 0.005;  % [m] Plastic slot width
-% rhonum = 930;        % [m] Nylon density
 
 
 % NACA 0018 expression
-yt = 5 * z * ( ...
-    0.2969 * sqrt(x) - ...
-    0.1260 * x - ...
-    0.3516 * x.^2 + ...
-    0.2843 * x.^3 - ...
-    0.1015 * x.^4); %[m]
+yt = 5 * z * c * ( ...
+    0.2969 * sqrt(x/c) - ...
+    0.1260 * (x/c) - ...
+    0.3516 * (x/c).^2 + ...
+    0.2843 * (x/c).^3 - ...
+    0.1015 * (x/c).^4); %[m]
+
 
 % Slot expression POTSER FALTA EL FORAT DEL NYLON PER L'ALUMINI
 ys = piecewise(x >= 0 & x <= 0.035, 0, ...
@@ -42,7 +34,7 @@ w(x,y,t) = eta + theta*(xs-x);
 
 % Kinetic energy
 
-T = h*int(int((0.5*rho*diff(w,t))^2,y,0,yt),x,xi,xf);
+T = h*int(2*int(0.5*rho*diff(w,t)^2,y,0,yt),x,xi,xf);
 q = {theta(t) gamma_(t) eta(t)};
 
 % Find Me rib 

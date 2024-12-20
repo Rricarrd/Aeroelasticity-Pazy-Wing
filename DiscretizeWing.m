@@ -9,7 +9,7 @@ ng = p.ng;
 
 % Rib positions
 yj = 0:Rs:Lw;
-yj(15) = 550;
+yj(15) = p.Lw;
 
 
 % Nodal coordinates
