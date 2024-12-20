@@ -13,7 +13,7 @@ p.xs = xs;
 
 p.rhoAl = 2795; % [kg/m^3] Density of Aluminium
 p.rhoNyl = 930; % [kg/m^3] Density of Nylon 12
-p.z = 0.18;          % [m] Maximum thickness
+p.z = 0.18;           % [m] Maximum thickness
 p.xi= 0.0075;         % [m] Initial x position
 p.xf = 0.095;         % [m] Final x position
 p.c = 0.1;            % [m] Chord
@@ -22,7 +22,8 @@ p.t = 0.00225;        % [m] Aluminium bar thickness
 p.bi = 0.02;          % [m] Aluminium bar front edge position
 p.h = 0.004;          % [m] Depth
 p.a_slot = 0.005;     % [m] Plastic slot width
-
+p.x1 = 0.035;         % [m] Plastic slot start position
+p.x2 = 0.065;         % [m] Plastic slot end position
 
 
 %% Numerical discretization
@@ -36,7 +37,7 @@ p.ng = 1;              % Gauss points per element
 p.en = 2;              % Element nodes
 p.Rt = 0.004;          % [m] Rib thickness
 
-p.sparse = 0;
+p.sparse = 1;
 
 % Computing beam mass parameters
 [p.mu,p.r0,p.rS,p.d] = computeBeamMassParameters(p);
