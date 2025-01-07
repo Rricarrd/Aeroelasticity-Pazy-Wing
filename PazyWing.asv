@@ -76,12 +76,12 @@ syms l ms % Aerodynamic functions
 q1 = {eta1; gamma1; theta1; eta2; gamma2; theta2};
 q2 = {deltaeta1; deltagamma1; deltatheta1; deltaeta2; deltagamma2; deltatheta2};
 
-% Definition of y (according to P1-14), b and a
+% Definition of y: (according to P1-14)
 y = p.Lw*(xi+1)/4;
 b = xs - 3*c/4;
 a = xs - c/4;
 
-% Definition of shape functions (according to P1-1)
+% Definition of shape functions
 psi1 = (1 + xi)/2;
 psi2 = (1 - xi)/2;
 
@@ -99,20 +99,18 @@ deltatheta_xi = psi1*deltatheta1 + psi2*deltatheta2;
 deltaeta_xi = phi1*deltaeta1 + phi_bar1*deltagamma1 + phi2*deltaeta2 + phi_bar2*deltagamma2;
 
 % Definition of lift and moment expressions of our model
-lc = pi*rho*Uinf^2*c*C*(theta_xi - b*diff(theta_xi,t)/(2*c) - diff(eta_xi,t)/(2*c));
-msc = pi*rho*Uinf^2*c*a*C*(theta_xi - b*diff(theta_xi,t)/(2*c) - diff(eta_xi,t)/(2*c));
 lnc = 0.5*pi*rho*Uinf^2*c*(diff(theta_xi,t) - (2*xs/c - 1)*diff(diff(theta_xi,t),t) - 2*(diff(diff(eta_xi,t),t))/c);
-msnc = -0.5*pi*rho*Uinf^2*c^2/2*(3/2*diff(theta_xi,t) - (2*xs/c - 9/8)*diff((diff(theta_xi,t)),t) - 2*(diff(diff(eta_xi,t),t))/c);
+mnc = -0.5*pi*rho*Uinf^2*c^2/2*(3/2*diff(theta_xi,t) - (2*xs/c - 9/8)*diff((diff(theta_xi,t)),t) - 2*(diff(diff(eta_xi,t),t))/c);
+l = pi*rho*Uinf^2*c*C*(theta_xi - b*diff(theta_xi,t)/(2*c) - diff(eta_xi,t)/(2*c)) + lnc;
+ms = pi*rho*Uinf^2*c*a*C*(theta_xi - b*diff(theta_xi,t)/(2*c) - diff(eta_xi,t)/(2*c)) + mnc + xs*lnc;
 
-% Definition of the virtual work term deltaW
-deltaWk = int((lc+lnc)*deltaeta_xi*hk/2,xi,-1,1) + ...
-          int((msc+msnc+xs*lnc)*deltatheta_xi*hk/2,xi,-1,1);
-deltaWkc = int(lc*deltaeta_xi*hk/2,xi,-1,1) + ...
-          int(msc*deltatheta_xi*hk/2,xi,-1,1);
-deltaWknc = int(lnc*deltaeta_xi*hk/2,xi,-1,1) + ...
-          int(msnc*deltatheta_xi*hk/2,xi,-1,1);
+% Definition of the virtual work term deltaWk
+deltaWkc = 
+deltaWknc
+deltaWk = int(l*deltaeta_xi*hk/2,xi,-1,1) + ...
+          int(ms*deltatheta_xi*hk/2,xi,-1,1);
 
-% Computation of element matrix coefficients symbolically
+% Step 5: Compute element matrix coefficients symbolically
 A0k = sym(zeros(6, 6)); 
 A1kc = sym(zeros(6, 6));
 A1knc = sym(zeros(6, 6));
@@ -120,8 +118,8 @@ A1knc = sym(zeros(6, 6));
 for i=1:6
     for j=1:6
         A0k(i,j) = simplify(diff(diff(deltaWk, q2(i)), q1(j)));
-        A0kc(i,j) = simplify(diff(diff(deltaWkc, q2(i)), diff(q1(j),t)));
-        A0knc(i,j) = simplify(diff(diff(deltaWknc, q2(i)), diff(q1(j),t)));
+        A0kc(i,j) = simplify(diff(diff(deltaWk, q2(i)), diff(q1(j),t)));
+        A0knc(i,j) = simplify(diff(diff(deltaWk, q2(i)), diff(q1(j),t)));
     end
 end
 
