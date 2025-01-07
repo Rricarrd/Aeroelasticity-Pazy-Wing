@@ -1,6 +1,6 @@
 function [mu,r0,rS,d] = computeBeamMassParameters(p)
 
-syms x y t % variables
+syms x y % variables
 
 % Numeric parameters
 xs = p.xs;         % [m] Shear center

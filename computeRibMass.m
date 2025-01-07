@@ -27,7 +27,7 @@ yt(x) = 5 * z * c * ( ...
 
 
 % Slot expression POTSER FALTA EL FORAT DEL NYLON PER L'ALUMINI
-ys = a_slot
+ys = a_slot;
 
 % Kinetics
 w(x,y,t) = eta + theta*(xs-x);

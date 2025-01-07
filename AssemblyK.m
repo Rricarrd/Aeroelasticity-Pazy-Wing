@@ -25,9 +25,6 @@ for e = 1:Nelem % For each element
 
 end
 
-if p.sparse
-    K = sparse(K);
-end
 
 end
 
