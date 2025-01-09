@@ -56,6 +56,15 @@ end
 p = polyfit(twists_, x_pos_,1);
 xs = polyval(p,0);
 
+% plot(x_pos_,twists_)
+% hold on
+% scatter(xs,0)
+% hold off
+% xlabel("$x$ position",Interpreter="latex")
+% ylabel("$\theta$",Interpreter="latex")
+% legend("Polyfit curve","xs")
+% xlim([-0.1 0.2])
+% grid on
 
 % Bending at shear
 ws = w2 + theta.*(x2-xs);

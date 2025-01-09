@@ -23,8 +23,11 @@ p.t = 0.00225;        % [m] Aluminium bar thickness
 p.bi = 0.02;          % [m] Aluminium bar front edge position
 p.h = 0.004;          % [m] Depth
 p.a_slot = 0.005;     % [m] Plastic slot width
+p.a_Al = 0.00225;     % [m] Aluminium slot width
 p.x1 = 0.035;         % [m] Plastic slot start position
 p.x2 = 0.065;         % [m] Plastic slot end position
+p.xAl1 = 0.02;         % [m] Plastic slot start position
+p.xAl2 = 0.08;         % [m] Plastic slot end position
 
 % Fluid properties
 p.rho = 1.225;
@@ -61,8 +64,6 @@ K = AssemblyK(y,Tn,Tr,p);
 % Fixing first nodes
 K = K(4:end,4:end);
 M = M(4:end,4:end);
-
-
 
 k = 10;
 [Q,W] = eigs(K,M,k,'sm'); % Solve for eigenvalues
@@ -113,5 +114,3 @@ for j = 1:6
     ylabel('p_I / 2\pi [Hz]')
     grid on
 end
-
-

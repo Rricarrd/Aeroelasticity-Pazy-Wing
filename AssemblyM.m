@@ -26,7 +26,7 @@ for e = 1:Nelem % For each element
 end
 
 % Introduction of the ribs mass
-Mrib = computeRibMass(p.xs,p.h,p.z,p.xi,p.xf,p.c,p.a_slot,p.rhoNyl,p.x1,p.x2);
+Mrib = computeRibMass(p.xs,p.h,p.z,p.xi,p.xf,p.c,p.a_slot,p.a_Al,p.rhoNyl,p.x1,p.x2,p.xAl1,p.xAl2);
 for e = 1:size(Tr,1)
 
     I_ribs = zeros(1,nj);
