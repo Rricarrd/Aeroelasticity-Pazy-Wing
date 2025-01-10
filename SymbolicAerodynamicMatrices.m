@@ -1,9 +1,9 @@
 function [A0k_num, A1kc_num, A1knc_num] = SymbolicAerodynamicMatrices(p)
 %% Aerodynamic matrices
 % Definition of symbolic variables
-syms xi hk y t Ck c rho Uinf xs 
-syms eta1(t) eta2(t) gamma1(t) gamma2(t) theta1(t) theta2(t) 
-syms deltaeta1(t) deltaeta2(t) deltagamma1(t) deltagamma2(t) deltatheta1(t) deltatheta2(t) 
+syms xi hk y t Ck c rho Uinf xs tau
+syms eta1(tau) eta2(tau) gamma1(tau) gamma2(tau) theta1(tau) theta2(tau) 
+syms deltaeta1(tau) deltaeta2(tau) deltagamma1(tau) deltagamma2(tau) deltatheta1(tau) deltatheta2(tau) 
 
 % Definition of nodal variable vector
 q1 = {eta1; gamma1; theta1; eta2; gamma2; theta2};
@@ -32,10 +32,12 @@ deltatheta_xi = psi1*deltatheta1 + psi2*deltatheta2;
 deltaeta_xi = phi1*deltaeta1 + phi_bar1*deltagamma1 + phi2*deltaeta2 + phi_bar2*deltagamma2;
 
 % Definition of lift and moment expressions of our model
-lc = pi*rho*Uinf^2*c*Ck*(theta_xi - b*diff(theta_xi,t)/(2*c) - diff(eta_xi,t)/(2*c));
-msc = pi*rho*Uinf^2*c*a*Ck*(theta_xi - b*diff(theta_xi,t)/(2*c) - diff(eta_xi,t)/(2*c));
-lnc = 0.5*pi*rho*Uinf^2*c*(diff(theta_xi,t) - (2*xs/c - 1)*diff(diff(theta_xi,t),t) - 2*(diff(diff(eta_xi,t),t))/c);
-msnc = -0.5*pi*rho*Uinf^2*c^2/2*(3/2*diff(theta_xi,t) - (2*xs/c - 9/8)*diff((diff(theta_xi,t)),t) - 2*(diff(diff(eta_xi,t),t))/c);
+lqs = pi*rho*Uinf^2*c*(theta_xi-b*diff(theta_xi,tau)/(2*c)-diff(eta_xi,tau)/(2*c));
+lc = Ck*lqs;
+msc = a*Ck*lqs;
+
+lnc = 0.5*pi*rho*Uinf^2*c*(diff(theta_xi,tau) - (2*xs/c - 1)*diff(diff(theta_xi,tau),tau) - 2*(diff(diff(eta_xi,tau),tau))/c);
+msnc = -0.5*pi*rho*Uinf^2*c^2/2*(3/2*diff(theta_xi,tau) - (2*xs/c - 9/8)*diff(diff(theta_xi,tau),tau) - 2*(diff(diff(eta_xi,tau),tau))/c);
 
 % Definition of the virtual work term deltaW
 deltaWk = int((lc+lnc)*deltaeta_xi*hk/2,xi,-1,1) + ...
@@ -43,7 +45,7 @@ deltaWk = int((lc+lnc)*deltaeta_xi*hk/2,xi,-1,1) + ...
 deltaWkc = int(lc*deltaeta_xi*hk/2,xi,-1,1) + ...
           int(msc*deltatheta_xi*hk/2,xi,-1,1);
 deltaWknc = int(lnc*deltaeta_xi*hk/2,xi,-1,1) + ...
-          int(msnc*deltatheta_xi*hk/2,xi,-1,1);
+          int((msnc+xs*lnc)*deltatheta_xi*hk/2,xi,-1,1);
 
 % Computation of element matrix coefficients symbolically
 A0k = sym(zeros(6, 6)); 
@@ -53,8 +55,8 @@ A1knc = sym(zeros(6, 6));
 for i=1:6
     for j=1:6
         A0k(i,j) = simplify(diff(diff(deltaWk, q2(i)), q1(j)));
-        A1kc(i,j) = simplify(diff(diff(deltaWkc, q2(i)), diff(q1(j),t)));
-        A1knc(i,j) = simplify(diff(diff(deltaWknc, q2(i)), diff(q1(j),t)));
+        A1kc(i,j) = simplify(diff(diff(deltaWkc, q2(i)), diff(q1(j),tau)));
+        A1knc(i,j) = simplify(diff(diff(deltaWknc, q2(i)), diff(q1(j),tau)));
     end
 end
 

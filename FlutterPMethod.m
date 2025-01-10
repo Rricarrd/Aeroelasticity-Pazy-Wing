@@ -1,12 +1,12 @@
-function [U_,p_,Vp_] = FlutterPMethod(p,K,M,A0,A1c,A1nc)
+function [U_,p_,Vp_] = FlutterPMethod(Umax,Nm,p,K,M,A0,A1c,A1nc)
 
 c = p.c;
-U_ = linspace(0.001,20,501); % Velocities vector
+U_ = linspace(0.001,Umax,100); % Velocities vector
 
 for i = 1:length(U_)
     
-    % Computing the effective matrices (NO TINC CLARS ELS COEFICIENTS)
-    Ceff = (0.5*U_(i)*c)*(A1c-A1nc);
+    % Computing the effective matrices
+    Ceff = 0.5*c*U_(i)*(A1c-A1nc);
     Keff = K - U_(i)^2*A0;
     
     % Extending the system
@@ -15,7 +15,7 @@ for i = 1:length(U_)
     B = [-Ceff, -M; eye(Ndof,Ndof), zeros(Ndof,Ndof)];
     
     % Solving the problem
-    [Vp,Dp] = eigs(A,B,10,'sm'); 
+    [Vp,Dp] = eigs(A,B,Nm,'sm'); 
     
     % Sorting the values so that to avoid the jumps jumps
     p = diag(Dp);

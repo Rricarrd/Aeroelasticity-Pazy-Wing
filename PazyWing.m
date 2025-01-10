@@ -97,10 +97,12 @@ A1nc = A1nc(4:end,4:end);
 
 
 %% Flutter p method
-[U_,p_,Vp_] = FlutterPMethod(p,K,M,A0,A1c,A1nc);
+Nm = 10;
+Umax = 100;
+[U_,p_,Vp_] = FlutterPMethod(Umax,Nm,p,K,M,A0,A1c,A1nc);
 
 figure
-for j = 1:6
+for j = 1:Nm
     subplot(2,1,1)
     hold on
     plot(U_,real(p_(j,:).*p.c./(2*U_)));
@@ -114,3 +116,33 @@ for j = 1:6
     ylabel('p_I / 2\pi [Hz]')
     grid on
 end
+
+
+%% Flutter k method
+[Uk_,gk_,wk_] = FlutterKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc)
+figure
+subplot(2,1,1)
+plot(Uk_',gk_');
+xlabel("U_\infty");
+ylabel("g");
+xlim([0 20])
+grid on
+subplot(2,1,2)
+plot(Uk_',wk_'/(2*pi));
+xlabel("U_\infty ");
+ylabel("\omega / 2\pi [Hz]");
+xlim([0 20])
+grid on
+
+%% Flutter pk method
+[U_, gam_,w_] = FlutterPKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc)
+figure
+subplot(2,1,1)
+plot(U_, gam_.*c./(2*U_))
+xlabel("U_\infty")
+ylabel("\gammac/2U\infty")
+subplot(2,1,2)
+plot(U_, w_/(2*pi))
+xlabel("U_\infty")
+ylabel("\omega/ 2\pi [Hz]")
+grid on
