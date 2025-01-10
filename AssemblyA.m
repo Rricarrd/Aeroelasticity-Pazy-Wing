@@ -11,8 +11,8 @@ A = zeros(Ndof,Ndof);
 
 for e = 1:Nelem % For each element
     
-    Li = y(Tn(e,2))-y(Tn(e,1)); % Element size
-    Ai = Ae*Li; % Aerodynamic element matrix 6x6 (6 = 2 nodes x 3 DOFs) (Still missing Uing and Ck (if needed))
+    hk = y(Tn(e,2))-y(Tn(e,1)); % Element size
+    Ah = Ae*hk; % Aerodynamic element matrix 6x6 (6 = 2 nodes x 3 DOFs) (Still missing Uing and Ck (if needed))
     
     I = zeros(1,en*nj); % Array of positions corresponding to the global matrix
 
@@ -22,7 +22,7 @@ for e = 1:Nelem % For each element
         end
     end
     
-    A(I,I) = A(I,I) + Ai; % Assembling the element matrix into the desired global positions
+    A(I,I) = A(I,I) + Ak; % Assembling the element matrix into the desired global positions
     
 end
 

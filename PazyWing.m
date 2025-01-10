@@ -98,7 +98,7 @@ A1nc = A1nc(4:end,4:end);
 
 %% Flutter p method
 Nm = 10;
-Umax = 100;
+Umax = 100; %[m/s]
 [U_,p_,Vp_] = FlutterPMethod(Umax,Nm,p,K,M,A0,A1c,A1nc);
 
 figure

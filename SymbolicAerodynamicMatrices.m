@@ -1,7 +1,7 @@
 function [A0k_num, A1kc_num, A1knc_num] = SymbolicAerodynamicMatrices(p)
 %% Aerodynamic matrices
 % Definition of symbolic variables
-syms xi hk y t Ck c rho Uinf xs tau
+syms xi hk y Ck c rho Uinf xs tau
 syms eta1(tau) eta2(tau) gamma1(tau) gamma2(tau) theta1(tau) theta2(tau) 
 syms deltaeta1(tau) deltaeta2(tau) deltagamma1(tau) deltagamma2(tau) deltatheta1(tau) deltatheta2(tau) 
 
@@ -54,9 +54,9 @@ A1knc = sym(zeros(6, 6));
 
 for i=1:6
     for j=1:6
-        A0k(i,j) = simplify(diff(diff(deltaWk, q2(i)), q1(j)));
-        A1kc(i,j) = simplify(diff(diff(deltaWkc, q2(i)), diff(q1(j),tau)));
-        A1knc(i,j) = simplify(diff(diff(deltaWknc, q2(i)), diff(q1(j),tau)));
+        A0k(i,j) = simplify(diff(diff(deltaWk, q2{i}), q1{j}));
+        A1kc(i,j) = simplify(diff(diff(deltaWkc, q2{i}), diff(q1{j},tau)));
+        A1knc(i,j) = simplify(diff(diff(deltaWknc, q2{i}), diff(q1{j},tau)));
     end
 end
 
