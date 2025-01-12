@@ -65,7 +65,7 @@ K = AssemblyK(y,Tn,Tr,p);
 K = K(4:end,4:end);
 M = M(4:end,4:end);
 
-Nm = 10;
+Nm = 15;
 [Q,W] = eigs(K,M,Nm,'sm'); % Solve for eigenvalues
 
 f = sqrt(diag(W))/(2*pi);

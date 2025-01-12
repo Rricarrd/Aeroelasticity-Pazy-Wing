@@ -1,7 +1,7 @@
 function [A0k_num, A1kc_num, A1knc_num] = SymbolicAerodynamicMatrices(p)
 %% Aerodynamic matrices
 % Definition of symbolic variables
-syms xi hk y Ck c rho Uinf xs tau
+syms xi hk Ck c rho Uinf xs tau
 syms eta1(tau) eta2(tau) gamma1(tau) gamma2(tau) theta1(tau) theta2(tau) 
 syms deltaeta1(tau) deltaeta2(tau) deltagamma1(tau) deltagamma2(tau) deltatheta1(tau) deltatheta2(tau) 
 
@@ -32,18 +32,20 @@ deltatheta_xi = psi1*deltatheta1 + psi2*deltatheta2;
 deltaeta_xi = phi1*deltaeta1 + phi_bar1*deltagamma1 + phi2*deltaeta2 + phi_bar2*deltagamma2;
 
 % Definition of lift and moment expressions of our model
-lqs = pi*rho*Uinf^2*c*(theta_xi-b*diff(theta_xi,tau)/(2*c)-diff(eta_xi,tau)/(2*c));
+lqs = pi*rho*Uinf^2*c*(theta_xi - b*diff(theta_xi,tau)/(2*c) - diff(eta_xi,tau)/(2*c));
 lc = Ck*lqs;
 msc = a*lc;
 
-lnc = 0.5*pi*rho*Uinf^2*c*(diff(theta_xi,tau) - (2*xs/c - 1)*diff(diff(theta_xi,tau),tau) - 2*(diff(diff(eta_xi,tau),tau))/c);
-msnc = -0.5*pi*rho*Uinf^2*c^2/2*(3/2*diff(theta_xi,tau) - (2*xs/c - 9/8)*diff(diff(theta_xi,tau),tau) - 2*(diff(diff(eta_xi,tau),tau))/c);
+lnc = 0.5*pi*rho*Uinf^2*c*(diff(theta_xi,tau) - (2*xs/c - 1)*diff(diff(theta_xi,tau),tau) - 2/c*(diff(diff(eta_xi,tau),tau)));
+msnc = -0.25*pi*rho*Uinf^2*c^2*(3/2*diff(theta_xi,tau) - (2*xs/c - 9/8)*diff(diff(theta_xi,tau),tau) - 2/c*(diff(diff(eta_xi,tau),tau)));
 
 % Definition of the virtual work term deltaW
 deltaWk = int((lc+lnc)*deltaeta_xi*hk/2,xi,-1,1) + ...
           int((msc+msnc+xs*lnc)*deltatheta_xi*hk/2,xi,-1,1);
+
 deltaWkc = int(lc*deltaeta_xi*hk/2,xi,-1,1) + ...
-          int((msc+xs*lc)*deltatheta_xi*hk/2,xi,-1,1);
+          int(msc*deltatheta_xi*hk/2,xi,-1,1);
+
 deltaWknc = int(lnc*deltaeta_xi*hk/2,xi,-1,1) + ...
           int((msnc+xs*lnc)*deltatheta_xi*hk/2,xi,-1,1);
 
