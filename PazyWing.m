@@ -26,8 +26,8 @@ p.a_slot = 0.005;     % [m] Plastic slot width
 p.a_Al = 0.00225;     % [m] Aluminium slot width
 p.x1 = 0.035;         % [m] Plastic slot start position
 p.x2 = 0.065;         % [m] Plastic slot end position
-p.xAl1 = 0.02;         % [m] Plastic slot start position
-p.xAl2 = 0.08;         % [m] Plastic slot end position
+p.xAl1 = 0.02;        % [m] Plastic slot start position
+p.xAl2 = 0.08;        % [m] Plastic slot end position
 
 % Fluid properties
 p.rho = 1.225;
@@ -65,8 +65,8 @@ K = AssemblyK(y,Tn,Tr,p);
 K = K(4:end,4:end);
 M = M(4:end,4:end);
 
-k = 10;
-[Q,W] = eigs(K,M,k,'sm'); % Solve for eigenvalues
+Nm = 10;
+[Q,W] = eigs(K,M,Nm,'sm'); % Solve for eigenvalues
 
 f = sqrt(diag(W))/(2*pi);
 
@@ -87,9 +87,12 @@ A1c = A1c(4:end,4:end);
 A1nc = A1nc(4:end,4:end);
 
 
-
-%%%%%%%%%%%%%%%%%%%%%% FALTA REDUCCIÓ D'ORDRE %%%%%%%%%%%%%%%%%%%%%%
-
+%% Order reduction
+M = Q'*M*Q;
+K = Q'*K*Q;
+A0 = Q'*A0*Q;
+A1c = Q'*A1c*Q;
+A1nc = Q'*A1nc*Q;
 
 
 %% Divergence
@@ -97,7 +100,6 @@ A1nc = A1nc(4:end,4:end);
 
 
 %% Flutter p method
-Nm = 10;
 Umax = 100; %[m/s]
 [U_,p_,Vp_] = FlutterPMethod(Umax,Nm,p,K,M,A0,A1c,A1nc);
 
@@ -119,7 +121,7 @@ end
 
 
 %% Flutter k method
-[Uk_,gk_,wk_] = FlutterKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc)
+[Uk_,gk_,wk_] = FlutterKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc);
 figure
 subplot(2,1,1)
 plot(Uk_',gk_');
@@ -135,10 +137,10 @@ xlim([0 20])
 grid on
 
 %% Flutter pk method
-[U_, gam_,w_] = FlutterPKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc)
+[U_, gam_,w_] = FlutterPKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc);
 figure
 subplot(2,1,1)
-plot(U_, gam_.*c./(2*U_))
+plot(U_, gam_.*p.c./(2*U_))
 xlabel("U_\infty")
 ylabel("\gammac/2U\infty")
 subplot(2,1,2)

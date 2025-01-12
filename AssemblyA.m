@@ -12,7 +12,7 @@ A = zeros(Ndof,Ndof);
 for e = 1:Nelem % For each element
     
     hk = y(Tn(e,2))-y(Tn(e,1)); % Element size
-    Ah = Ae*hk; % Aerodynamic element matrix 6x6 (6 = 2 nodes x 3 DOFs) (Still missing Uing and Ck (if needed))
+    Ak = Ae*hk; % Aerodynamic element matrix 6x6 (6 = 2 nodes x 3 DOFs) (Still missing Uing and Ck (if needed))
     
     I = zeros(1,en*nj); % Array of positions corresponding to the global matrix
 

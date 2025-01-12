@@ -5,7 +5,7 @@ max_iter = 100;
 
 % Parameters
 U_ = linspace(0.001,Umax,100); % Velocities vector
-c = p.c
+c = p.c;
 
 % Defining the Theodorsen's function:
 C = @(k) 1 - 0.165/(1-1i*0.045/k) - 0.335/(1-1i*0.3/k);
@@ -46,7 +46,7 @@ for i = 1:length(U_)
             B = [zeros(Ndof), -M; eye(Ndof,Ndof), zeros(Ndof,Ndof)];
 
             % Solve eigenvalues
-            [Vpk, Dpk] = eig(A,B,Nm,'sm');
+            [Vpk, Dpk] = eigs(A,B,Nm,'sm');
             p = diag(Dpk);
             
             % Look for closest node to initial guess (w_ and gam_)

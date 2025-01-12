@@ -34,7 +34,7 @@ deltaeta_xi = phi1*deltaeta1 + phi_bar1*deltagamma1 + phi2*deltaeta2 + phi_bar2*
 % Definition of lift and moment expressions of our model
 lqs = pi*rho*Uinf^2*c*(theta_xi-b*diff(theta_xi,tau)/(2*c)-diff(eta_xi,tau)/(2*c));
 lc = Ck*lqs;
-msc = a*Ck*lqs;
+msc = a*lc;
 
 lnc = 0.5*pi*rho*Uinf^2*c*(diff(theta_xi,tau) - (2*xs/c - 1)*diff(diff(theta_xi,tau),tau) - 2*(diff(diff(eta_xi,tau),tau))/c);
 msnc = -0.5*pi*rho*Uinf^2*c^2/2*(3/2*diff(theta_xi,tau) - (2*xs/c - 9/8)*diff(diff(theta_xi,tau),tau) - 2*(diff(diff(eta_xi,tau),tau))/c);
@@ -43,7 +43,7 @@ msnc = -0.5*pi*rho*Uinf^2*c^2/2*(3/2*diff(theta_xi,tau) - (2*xs/c - 9/8)*diff(di
 deltaWk = int((lc+lnc)*deltaeta_xi*hk/2,xi,-1,1) + ...
           int((msc+msnc+xs*lnc)*deltatheta_xi*hk/2,xi,-1,1);
 deltaWkc = int(lc*deltaeta_xi*hk/2,xi,-1,1) + ...
-          int(msc*deltatheta_xi*hk/2,xi,-1,1);
+          int((msc+xs*lc)*deltatheta_xi*hk/2,xi,-1,1);
 deltaWknc = int(lnc*deltaeta_xi*hk/2,xi,-1,1) + ...
           int((msnc+xs*lnc)*deltatheta_xi*hk/2,xi,-1,1);
 
