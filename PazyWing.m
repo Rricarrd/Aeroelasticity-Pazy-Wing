@@ -65,7 +65,7 @@ K = AssemblyK(y,Tn,Tr,p);
 K = K(4:end,4:end);
 M = M(4:end,4:end);
 
-Nm = 15;
+Nm = 6;
 [Q,W] = eigs(K,M,Nm,'sm'); % Solve for eigenvalues
 
 f = sqrt(diag(W))/(2*pi);
@@ -148,3 +148,49 @@ plot(U_, w_/(2*pi))
 xlabel("U_\infty")
 ylabel("\omega/ 2\pi [Hz]")
 grid on
+
+
+
+%% Plot modes
+for i = 1:Nm
+    modes_legend{i} = sprintf("Mode %i, $f = %.2f Hz$",i,f(i));
+end
+
+
+%Eta
+figure
+for i = 1:Nm
+    plot(y(2:end),Q(1:3:end,i))
+    hold on
+end
+grid minor;
+title(sprintf("First %i modal displacements",Nm))
+xlabel("y [m]", 'Interpreter', 'latex');
+ylabel("Modal displacements $\Phi(\eta)$", 'Interpreter', 'latex');
+legend(modes_legend{1:Nm},'Interpreter',"latex");
+
+
+% Gamma
+figure
+for i = 1:Nm
+    plot(y(2:end),Q(2:3:end,i))
+    hold on
+end
+grid minor;
+title(sprintf("First %i modal displacements",Nm))
+xlabel("y [m]", 'Interpreter', 'latex');
+ylabel("Modal displacements $\Phi(\gamma)$", 'Interpreter', 'latex');
+legend(modes_legend{1:Nm},'Interpreter',"latex");
+
+
+% Theta
+figure
+for i = 1:Nm
+    plot(y(2:end),Q(3:3:end,i))
+    hold on
+end
+grid minor;
+title(sprintf("First %i modal displacements",Nm))
+xlabel("y [m]", 'Interpreter', 'latex');
+ylabel("Modal displacements $\Phi(\theta)$", 'Interpreter', 'latex');
+legend(modes_legend{1:Nm},'Interpreter',"latex");
