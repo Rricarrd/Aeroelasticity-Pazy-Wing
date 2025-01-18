@@ -25,20 +25,20 @@ for e = 1:Nelem % For each element
     
 end
 
-% % Introduction of the ribs mass
-% Mrib = computeRibMass(p);
-% 
-% for e = 1:size(Tr,1)
-% 
-%     I_ribs = zeros(1,nj);
-%     k = 0;
-%     for j = 1:nj
-%         k = k + 1;
-%         I_ribs(1,k) = IndexDOF(p,Tr(e),j);
-%     end
-% 
-%     M(I_ribs,I_ribs) = M(I_ribs,I_ribs) + Mrib;
-% end
+% Introduction of the ribs mass
+Mrib = computeRibMass(p);
+
+for e = 1:size(Tr,1)
+
+    I_ribs = zeros(1,nj);
+    k = 0;
+    for j = 1:nj
+        k = k + 1;
+        I_ribs(1,k) = IndexDOF(p,Tr(e),j);
+    end
+
+    M(I_ribs,I_ribs) = M(I_ribs,I_ribs) + Mrib;
+end
 
 end
 
