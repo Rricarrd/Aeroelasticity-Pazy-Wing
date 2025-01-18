@@ -55,18 +55,18 @@ p.sparse = 1;
 
 %% Element mass matrices
 
-M = AssemblyM(y,Tn,Tr,p);
+M_ = AssemblyM(y,Tn,Tr,p);
 
-K = AssemblyK(y,Tn,Tr,p);
+K_ = AssemblyK(y,Tn,Tr,p);
 
 
 %% Free vibrations
 % Fixing first nodes
-K = K(4:end,4:end);
-M = M(4:end,4:end);
+K_ = K_(4:end,4:end);
+M_ = M_(4:end,4:end);
 
 Nm = 6;
-[Q,W] = eigs(K,M,Nm,'sm'); % Solve for eigenvalues
+[Q,W] = eigs(K_,M_,Nm,'smallestabs'); % Solve for eigenvalues
 
 f = sqrt(diag(W))/(2*pi);
 
@@ -77,26 +77,26 @@ f = sqrt(diag(W))/(2*pi);
 
 %% Aerodynamic global matrices
 % Assembly of matrices (Without U and Ck)
-A0 = AssemblyA(A0k, y, Tn, p);
-A1c = AssemblyA(A1kc, y, Tn, p);
-A1nc = AssemblyA(A1knc, y, Tn, p);
+A0_ = AssemblyA(A0k, y, Tn, p);
+A1c_ = AssemblyA(A1kc, y, Tn, p);
+A1nc_ = AssemblyA(A1knc, y, Tn, p);
 
 % Excluding BCs
-A0 = A0(4:end,4:end);
-A1c = A1c(4:end,4:end);
-A1nc = A1nc(4:end,4:end);
+A0_ = A0_(4:end,4:end);
+A1c_ = A1c_(4:end,4:end);
+A1nc_ = A1nc_(4:end,4:end);
 
 
 %% Order reduction
-M = Q'*M*Q;
-K = Q'*K*Q;
-A0 = Q'*A0*Q;
-A1c = Q'*A1c*Q;
-A1nc = Q'*A1nc*Q;
+M = Q'*M_*Q;
+K = Q'*K_*Q;
+A0 = Q'*A0_*Q;
+A1c = Q'*A1c_*Q;
+A1nc = Q'*A1nc_*Q;
 
 
 %% Divergence
-[Ud] = Divergence(K,A0,50);
+[Ud] = Divergence(p,K,A0,50);
 
 
 %% Flutter p method

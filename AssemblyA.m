@@ -1,4 +1,5 @@
 function [A] = AssemblyA(Ae,y,Tn,p)
+syms hk
 
 % Parameters
 Ndof = p.Ndof;
@@ -11,9 +12,10 @@ A = zeros(Ndof,Ndof);
 
 for e = 1:Nelem % For each element
     
-    hk = y(Tn(e,2))-y(Tn(e,1)); % Element size
-    Ak = Ae*hk; % Aerodynamic element matrix 6x6 (6 = 2 nodes x 3 DOFs) (Still missing Uing and Ck (if needed))
-    
+    hk_num = y(Tn(e,2))-y(Tn(e,1)); % Element size
+
+    Ak = double(subs(Ae,hk,hk_num)); % Aerodynamic element matrix 6x6 (6 = 2 nodes x 3 DOFs) (Still missing Uing and Ck (if needed))
+
     I = zeros(1,en*nj); % Array of positions corresponding to the global matrix
 
     for i = 1:en     % For each node of the element

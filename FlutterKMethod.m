@@ -4,6 +4,7 @@ function[Uk_,gk_,wk_] = FlutterKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc)
 % Parameters
 U_ = linspace(0.001,Umax,100); % Velocities vector
 c = p.c;
+rho = p.rho;
 
 
 % Defining the Theodorsen's function:
@@ -24,7 +25,7 @@ for i = 1:length(invk_)
     k = 1/invk_(i);
     
     % Compute effective mass expression
-    Meff = M + c^2/(4*k^2)*(C(k)*A0 - 1i*k*(C(k)*A1c - A1nc));
+    Meff = M + rho*c^2/(8*k^2)*(C(k)*A0 - 1i*k*(C(k)*A1c - A1nc));
     
     % Solve the eigenvalues problem
     [Vk,Dk] = eigs(Meff,K,Nm,'sm'); % We use the opposite (usually it is eigs(K,M) but now it the opposite: see equations of page T2.2-8 --> we have the eigenvalue (lambda) multiplying the K matrix instead of the Meff matrix)

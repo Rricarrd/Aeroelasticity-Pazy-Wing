@@ -6,6 +6,7 @@ max_iter = 100;
 % Parameters
 U_ = linspace(0.001,Umax,100); % Velocities vector
 c = p.c;
+rho = p.rho;
 
 % Defining the Theodorsen's function:
 C = @(k) 1 - 0.165/(1-1i*0.045/k) - 0.335/(1-1i*0.3/k);
@@ -39,7 +40,7 @@ for i = 1:length(U_)
             k = w_(j,i)*c/(2*U_(i));
             
             % Compute effective matrices
-            Keff = K - U_(i)^2*(C(k)*A0 - 1i*k*(C(k)*A1c-A1nc));
+            Keff = K - 0.5*rho*U_(i)^2*(C(k)*A0 - 1i*k*(C(k)*A1c-A1nc));
             
             % Extend system matrices
             A = [Keff, zeros(Ndof,Ndof); zeros(Ndof,Ndof), eye(Ndof,Ndof)];

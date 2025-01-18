@@ -1,4 +1,4 @@
-function [A0k_num, A1kc_num, A1knc_num] = SymbolicAerodynamicMatrices(p)
+function [A0k, A1kc, A1knc] = SymbolicAerodynamicMatrices(p)
 %% Aerodynamic matrices
 % Definition of symbolic variables
 syms xi hk Ck c rho Uinf xs tau
@@ -10,7 +10,7 @@ q1 = {eta1; gamma1; theta1; eta2; gamma2; theta2};
 q2 = {deltaeta1; deltagamma1; deltatheta1; deltaeta2; deltagamma2; deltatheta2};
 
 % Definition of y (according to P1-14), b and a
-y = p.Lw*(xi+1)/4;
+y = hk*(xi+1)/2;
 b = xs - 3*c/4;
 a = xs - c/4;
 
@@ -39,6 +39,9 @@ msc = a*lc;
 lnc = 0.5*pi*rho*Uinf^2*c*(diff(theta_xi,tau) - (2*xs/c - 1)*diff(diff(theta_xi,tau),tau) - 2/c*(diff(diff(eta_xi,tau),tau)));
 msnc = -0.25*pi*rho*Uinf^2*c^2*(3/2*diff(theta_xi,tau) - (2*xs/c - 9/8)*diff(diff(theta_xi,tau),tau) - 2/c*(diff(diff(eta_xi,tau),tau)));
 
+lnc = 0;
+msnc = 0;
+
 % Definition of the virtual work term deltaW
 deltaWk = int((lc+lnc)*deltaeta_xi*hk/2,xi,-1,1) + ...
           int((msc+msnc+xs*lnc)*deltatheta_xi*hk/2,xi,-1,1);
@@ -63,11 +66,9 @@ for i=1:6
 end
 
 % Substituting constant parameters (And dividing by hk and Uinf (And Ck where applicable))
-A0k_num = double(subs(A0k,[xs,c,rho],[p.xs,p.c,p.rho])/(Uinf^2*hk*Ck));
-A1kc_num = double(subs(A1kc,[xs,c,rho],[p.xs,p.c,p.rho])/(Uinf^2*hk*Ck));
-A1knc_num = double(subs(A1knc,[xs,c,rho],[p.xs,p.c,p.rho])/(Uinf^2*hk));
-
-
+A0k = subs(A0k,[xs,c,rho],[p.xs,p.c,p.rho])/(0.5*p.rho*Uinf^2*Ck);
+A1kc = subs(A1kc,[xs,c,rho],[p.xs,p.c,p.rho])/(0.5*p.rho*Uinf^2*Ck);
+A1knc = subs(A1knc,[xs,c,rho],[p.xs,p.c,p.rho])/(0.5*p.rho*Uinf^2);
 
 
 end

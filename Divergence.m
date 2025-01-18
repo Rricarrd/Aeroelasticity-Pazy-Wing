@@ -1,10 +1,13 @@
-function [Ud] = Divergence(Knum,Anum,k)
+function [Ud] = Divergence(p,Knum,Anum,k)
+
+
+
 
 % Eigenproblem
 [~,d] = eigs(Knum,Anum,k,'sm');
 
 % Velocities at the diagonal of the eigenvalues
-Ud = sqrt(diag(d));
+Ud = sqrt(diag(d)/(0.5*p.rho));
 
 % Classifying the velocities
 for i = 1:size(d,1)
