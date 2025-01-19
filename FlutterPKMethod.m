@@ -40,7 +40,7 @@ for i = 1:length(U_)
             k = w_(j,i)*c/(2*U_(i));
             
             % Compute effective matrices
-            Keff = K - 0.5*rho*U_(i)^2*(C(k)*A0 - 1i*k*(C(k)*A1c-A1nc));
+            Keff = K - pi*rho*c*U_(i)^2*(C(k)*A0 - 1i*k*(C(k)*A1c-A1nc));
             
             % Extend system matrices
             A = [Keff, zeros(Ndof,Ndof); zeros(Ndof,Ndof), eye(Ndof,Ndof)];

@@ -1,13 +1,16 @@
-function [Ud] = Divergence(p,Knum,Anum,k)
+function [Ud] = Divergence(p,K,A,k)
+% Parameters
+c = p.c;
+rho = p.rho;
 
-
-
+% Aerodynamic matrix effect to correct units
+A = 0.5*pi*rho*c*A;
 
 % Eigenproblem
-[~,d] = eigs(Knum,Anum,k,'sm');
+[~,d] = eigs(K,A,k,'sm');
 
 % Velocities at the diagonal of the eigenvalues
-Ud = sqrt(diag(d)/(0.5*p.rho));
+Ud = sqrt(diag(d));
 
 % Classifying the velocities
 for i = 1:size(d,1)

@@ -4,9 +4,8 @@ clc
 clear
 %% Calculate Wing Stiffness
 % K Matrix Parameters
-if exist('EI','var') ~= 1
-    [GJ,EI,xs] = CalcStiffness();
-end
+[GJ,EI,xs] = CalcStiffness();
+
 p.EI = EI;
 p.GJ = GJ;
 p.xs = xs;
@@ -65,7 +64,7 @@ K_ = AssemblyK(y,Tn,Tr,p);
 K_ = K_(4:end,4:end);
 M_ = M_(4:end,4:end);
 
-Nm = 6;
+Nm = 10;
 [Q,W] = eigs(K_,M_,Nm,'smallestabs'); % Solve for eigenvalues
 
 f = sqrt(diag(W))/(2*pi);

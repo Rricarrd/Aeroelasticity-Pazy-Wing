@@ -11,7 +11,7 @@ rho = p.rho;
 C = @(k) 1 - 0.165/(1-1i*0.045/k) - 0.335/(1-1i*0.3/k);
 
 % Inverse k vector (k^-1 = (2*Uinf)/(omega*c))
-invk_ = linspace(0.001,5,100);
+invk_ = linspace(0.001,10,100);
 
 % Preallocation
 Ndof = size(K,1); 
@@ -25,7 +25,7 @@ for i = 1:length(invk_)
     k = 1/invk_(i);
     
     % Compute effective mass expression
-    Meff = M + rho*c^2/(8*k^2)*(C(k)*A0 - 1i*k*(C(k)*A1c - A1nc));
+    Meff = M + 0.5*pi*rho*c^3/(4*k^2)*(C(k)*A0 - 1i*k*(C(k)*A1c - A1nc));
     
     % Solve the eigenvalues problem
     [Vk,Dk] = eigs(Meff,K,Nm,'sm'); % We use the opposite (usually it is eigs(K,M) but now it the opposite: see equations of page T2.2-8 --> we have the eigenvalue (lambda) multiplying the K matrix instead of the Meff matrix)
