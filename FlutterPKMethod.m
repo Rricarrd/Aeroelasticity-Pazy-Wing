@@ -4,7 +4,7 @@ tol = 1e-6;
 max_iter = 100;
 
 % Parameters
-U_ = linspace(0.001,Umax,100); % Velocities vector
+U_ = linspace(0.001,Umax,200); % Velocities vector
 c = p.c;
 rho = p.rho;
 
@@ -23,7 +23,6 @@ w_(:,1) = sqrt(diag(Ds));
 
 % Loop through velocites
 for i = 1:length(U_)
-
     if i>1
         w_(:,i) = w_(:,i-1);
         gam_(:,i) = gam_(:,i-1);
@@ -40,14 +39,14 @@ for i = 1:length(U_)
             k = w_(j,i)*c/(2*U_(i));
             
             % Compute effective matrices
-            Keff = K - pi*rho*c*U_(i)^2*(C(k)*A0 - 1i*k*(C(k)*A1c-A1nc));
+            Keff = K - U_(i)^2*(C(k)*A0 - 1i*k*(C(k)*A1c-A1nc));
             
             % Extend system matrices
             A = [Keff, zeros(Ndof,Ndof); zeros(Ndof,Ndof), eye(Ndof,Ndof)];
             B = [zeros(Ndof), -M; eye(Ndof,Ndof), zeros(Ndof,Ndof)];
 
             % Solve eigenvalues
-            [Vpk, Dpk] = eigs(A,B,Nm,'sm');
+            [Vpk, Dpk] = eig(A,B);
             p = diag(Dpk);
             
             % Look for closest node to initial guess (w_ and gam_)

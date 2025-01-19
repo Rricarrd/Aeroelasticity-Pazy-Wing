@@ -64,7 +64,7 @@ K_ = AssemblyK(y,Tn,Tr,p);
 K_ = K_(4:end,4:end);
 M_ = M_(4:end,4:end);
 
-Nm = 10;
+Nm = 6;
 [Q,W] = eigs(K_,M_,Nm,'smallestabs'); % Solve for eigenvalues
 
 f = sqrt(diag(W))/(2*pi);
@@ -99,55 +99,73 @@ A1nc = Q'*A1nc_*Q;
 
 
 %% Flutter p method
-Umax = 100; %[m/s]
+Umax = 120; %[m/s]
 [U_,p_,Vp_] = FlutterPMethod(Umax,Nm,p,K,M,A0,A1c,A1nc);
 
-figure
-for j = 1:Nm
-    subplot(2,1,1)
-    hold on
-    plot(U_,real(p_(j,:).*p.c./(2*U_)));
-    xlabel('U')
-    ylabel('p_R c / 2U\infty')
-    grid on
-    subplot(2,1,2)
-    hold on
-    plot(U_,abs(imag(p_(j,:))/(2*pi)));
-    xlabel('U')
-    ylabel('p_I / 2\pi [Hz]')
-    grid on
-end
+figure(1)
 
+subplot(2,1,1)
+hold on
+for j = 1:Nm
+    plot(U_,real(p_(j,:).*p.c./(2*U_)));
+end
+grid on;
+grid minor;
+xlabel('U')
+ylabel('p_R c / 2U\infty')
+xlim([0 100])
+
+subplot(2,1,2)
+hold on
+for j = 1:Nm
+    plot(U_,abs(imag(p_(j,:))/(2*pi)));
+end
+xlabel('U')
+ylabel('p_I / 2\pi [Hz]')
+xlim([0 100])
+grid on;
+grid minor;
+
+saveas(figure(1),"FIGURES/p_method.eps","epsc")
 
 %% Flutter k method
 [Uk_,gk_,wk_] = FlutterKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc);
-figure
+figure(2)
 subplot(2,1,1)
-plot(Uk_',gk_');
+plot(Uk_',real(gk_)');
+grid on;
+grid minor;
 xlabel("U_\infty");
 ylabel("g");
-xlim([0 20])
-grid on
+xlim([0 180])
+
 subplot(2,1,2)
 plot(Uk_',wk_'/(2*pi));
 xlabel("U_\infty ");
 ylabel("\omega / 2\pi [Hz]");
-xlim([0 20])
-grid on
+xlim([0 180])
+grid on;
+grid minor;
+saveas(figure(2),"FIGURES/k_method.eps","epsc")
 
 %% Flutter pk method
 [U_, gam_,w_] = FlutterPKMethod(Umax,Nm,p,K,M,A0,A1c,A1nc);
-figure
+figure(3)
 subplot(2,1,1)
 plot(U_, gam_.*p.c./(2*U_))
+xlim([0 100])
+grid on;
+grid minor;
 xlabel("U_\infty")
 ylabel("\gammac/2U\infty")
 subplot(2,1,2)
 plot(U_, w_/(2*pi))
+xlim([0 100])
 xlabel("U_\infty")
 ylabel("\omega/ 2\pi [Hz]")
-grid on
-
+grid on;
+grid minor;
+saveas(figure(3),"FIGURES/pk_method.eps","epsc")
 
 
 %% Plot modes
@@ -157,39 +175,39 @@ end
 
 
 %Eta
-figure
+figure(4)
 for i = 1:Nm
     plot(y(2:end),Q(1:3:end,i))
     hold on
 end
+grid on;
 grid minor;
-title(sprintf("First %i modal displacements",Nm))
 xlabel("y [m]", 'Interpreter', 'latex');
 ylabel("Modal displacements $\Phi(\eta)$", 'Interpreter', 'latex');
-legend(modes_legend{1:Nm},'Interpreter',"latex");
-
+legend(modes_legend{1:Nm},'Interpreter',"latex",'Location','best');
+saveas(figure(4),"FIGURES/eta.eps","epsc")
 
 % Gamma
-figure
+figure(5)
 for i = 1:Nm
     plot(y(2:end),Q(2:3:end,i))
     hold on
 end
+grid on;
 grid minor;
-title(sprintf("First %i modal displacements",Nm))
 xlabel("y [m]", 'Interpreter', 'latex');
 ylabel("Modal displacements $\Phi(\gamma)$", 'Interpreter', 'latex');
-legend(modes_legend{1:Nm},'Interpreter',"latex");
-
+legend(modes_legend{1:Nm},'Interpreter',"latex",'Location','best');
+saveas(figure(5),"FIGURES/gamma.eps","epsc")
 
 % Theta
-figure
+figure(6)
 for i = 1:Nm
     plot(y(2:end),Q(3:3:end,i))
     hold on
 end
 grid minor;
-title(sprintf("First %i modal displacements",Nm))
 xlabel("y [m]", 'Interpreter', 'latex');
 ylabel("Modal displacements $\Phi(\theta)$", 'Interpreter', 'latex');
-legend(modes_legend{1:Nm},'Interpreter',"latex");
+legend(modes_legend{1:Nm},'Interpreter',"latex",'Location','best');
+saveas(figure(6),"FIGURES/theta.eps","epsc")

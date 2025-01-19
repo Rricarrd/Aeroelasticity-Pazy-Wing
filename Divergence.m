@@ -1,11 +1,4 @@
-function [Ud] = Divergence(p,K,A,k)
-% Parameters
-c = p.c;
-rho = p.rho;
-
-% Aerodynamic matrix effect to correct units
-A = 0.5*pi*rho*c*A;
-
+function [Ud] = Divergence(~,K,A,k)
 % Eigenproblem
 [~,d] = eigs(K,A,k,'sm');
 

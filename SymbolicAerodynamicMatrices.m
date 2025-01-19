@@ -1,4 +1,4 @@
-function [A0k, A1kc, A1knc] = SymbolicAerodynamicMatrices(p)
+function [A0k_num, A1kc_num, A1knc_num] = SymbolicAerodynamicMatrices(p)
 %% Aerodynamic matrices
 
 % Parameters
@@ -16,8 +16,8 @@ q1 = {eta1; gamma1; theta1; eta2; gamma2; theta2};
 q2 = {deltaeta1; deltagamma1; deltatheta1; deltaeta2; deltagamma2; deltatheta2};
 
 % Definition of y (according to P1-14), b and a
-y = hk*(xi+1)/2;
-b = xs - 3*c/4;
+y = hk*(xi+1)/4;
+b = xs - (3*c/4);
 a = xs - c/4;
 
 % Definition of shape functions (according to P1-1)
@@ -38,8 +38,8 @@ deltatheta_xi = psi1*deltatheta1 + psi2*deltatheta2;
 deltaeta_xi = phi1*deltaeta1 + phi_bar1*deltagamma1 + phi2*deltaeta2 + phi_bar2*deltagamma2;
 
 % Definition of lift and moment expressions of our model
-lc = Ck*pi*rho*Uinf^2*c*(theta_xi);% - b*diff(theta_xi,tau)/(2*c) - diff(eta_xi,tau)/(2*c));
-msc = a*Ck*pi*rho*Uinf^2*c*(theta_xi);%- b*diff(theta_xi,tau)/(2*c) - diff(eta_xi,tau)/(2*c));
+lc = Ck*pi*rho*Uinf^2*c*(theta_xi - b*diff(theta_xi,tau)/(2*c) - diff(eta_xi,tau)/(2*c));
+msc = a*Ck*pi*rho*Uinf^2*c*(theta_xi- b*diff(theta_xi,tau)/(2*c) - diff(eta_xi,tau)/(2*c));
 
 lnc = 0.5*pi*rho*Uinf^2*c*(diff(theta_xi,tau));%  - f2*(2*xs/c - 1)*diff(diff(theta_xi,tau),tau) - f2*2/c*(diff(diff(eta_xi,tau),tau)));
 msnc = -0.25*pi*rho*Uinf^2*c^2*(3/2*diff(theta_xi,tau));%  - f2*(2*xs/c - 9/8)*diff(diff(theta_xi,tau),tau) - f2*2/c*(diff(diff(eta_xi,tau),tau)));
@@ -70,18 +70,14 @@ end
 
 % Substituting constant parameters (And dividing by hk and Uinf (And Ck where applicable))
 
-A0k(:,[2,3,5,6]) = A0k(:,[2,3,5,6])/c;
-A0k = A0k/(0.5*Uinf^2*Ck*rho*pi);
-A0k = subs(A0k,[xs,c,rho],[p.xs,p.c,p.rho]);
+A0k = A0k/(Uinf^2*Ck);
+A0k_num = subs(A0k,[xs,c,rho],[p.xs,p.c,p.rho]);
 
-A1kc(:,[2,3,5,6]) = A1kc(:,[2,3,5,6])/c;
-A1kc = A1kc/(0.5*Uinf^2*Ck*rho*pi);
-A1kc = subs(A1kc,[xs,c,rho],[p.xs,p.c,p.rho]);
+A1kc = A1kc/(-Uinf^2*Ck);
+A1kc_num = subs(A1kc,[xs,c,rho],[p.xs,p.c,p.rho]);
 
-
-A1knc(:,[2,3,5,6]) = A1knc(:,[2,3,5,6])/c;
-A1knc = A1knc/(0.5*Uinf^2*rho*pi);
-A1knc = subs(A1knc,[xs,c,rho],[p.xs,p.c,p.rho]);
+A1knc = A1knc/(Uinf^2);
+A1knc_num = subs(A1knc,[xs,c,rho],[p.xs,p.c,p.rho]);
 
 
 % A0k = A0k/(pi*rho*Uinf^2*c*Ck);
